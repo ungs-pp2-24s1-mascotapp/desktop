@@ -4,10 +4,11 @@ plugins {
     id 'jacoco'
 }
 
-repositories {
-    // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+allprojects {
+    repositories {
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
 }
 
 dependencies {
@@ -21,6 +22,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'com.github.ungs-pp2-24s1-mascotapp:core:main-SNAPSHOT'
 }
 
 tasks.named('test') {

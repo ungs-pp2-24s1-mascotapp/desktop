@@ -12,4 +12,9 @@ class ViewTest {
         View classUnderTest = new View();
         assertTrue(classUnderTest.isWorking(), "isWorking should return 'true'");
     }
+
+    @Test void isWorkingDependencyProjectMethodReturnsTrue() {
+        View classUnderTest = new View();
+        assertTrue(classUnderTest.isWorkingDependencyProject(), "isWorkingDependencyProject should return 'true'");
+    }
 }
