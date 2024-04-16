@@ -20,8 +20,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import com.mascotapp.core.MascotApp;
+import com.mascotapp.core.entities.Pet;
 import com.mascotapp.desktop.controller.MascotAppController;
-import com.mascotapp.desktop.model.MascotAppModel;
 
 public class MascotAppView extends JFrame implements Observer {
 	
@@ -35,7 +36,7 @@ public class MascotAppView extends JFrame implements Observer {
     private JList<String> resultList;
     private DefaultListModel<String> listModel;
 
-    MascotAppModel mascotAppCore;
+    MascotApp mascotAppCore;
     MascotAppController mascotAppController;
 
     public MascotAppView() {
@@ -86,14 +87,14 @@ public class MascotAppView extends JFrame implements Observer {
     
     @Override
     public void update(Observable o, Object arg) {
-        List<String> results = (List<String>) arg;
+        List<Pet> results = (List<Pet>) arg;
         setResults(results);
     }
     
-    public void setResults(List<String> results) {
+    public void setResults(List<Pet> results) {
         listModel.clear();
-        for (String result : results) {
-            listModel.addElement(result);
+        for (Pet result : results) {
+            listModel.addElement(result.getAnimalType() + ", " + result.getName() + ", " + result.getPost().getUrl());
         }
     }
     

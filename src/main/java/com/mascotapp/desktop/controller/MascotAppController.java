@@ -5,15 +5,15 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mascotapp.desktop.model.MascotAppModel;
+import com.mascotapp.core.MascotApp;
 import com.mascotapp.desktop.view.MascotAppView;
 
 public class MascotAppController {
 	
 	private MascotAppView mascotAppView;
-    private MascotAppModel mascotAppCore;
+    private MascotApp mascotAppCore;
 
-    public MascotAppController(MascotAppView mascotAppView, MascotAppModel mascotAppCore) {
+    public MascotAppController(MascotAppView mascotAppView, MascotApp mascotAppCore) {
         this.mascotAppView = mascotAppView;
         this.mascotAppCore = mascotAppCore;
         
@@ -25,7 +25,7 @@ public class MascotAppController {
         @Override
         public void actionPerformed(ActionEvent e) {
             String query = mascotAppView.getSearchQuery();
-            mascotAppCore.searchPets(query);
+            mascotAppCore.search(query);
         }
     }
 }

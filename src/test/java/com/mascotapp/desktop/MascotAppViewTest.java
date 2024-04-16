@@ -5,13 +5,13 @@ package com.mascotapp.desktop;
 
 import org.junit.jupiter.api.Test;
 
-import com.mascotapp.core.Library;
+import com.mascotapp.core.entities.Pet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MascotAppViewTest {
     @Test void isWorkingDependencyProjectMethodReturnsTrue() {
-        Library classUnderTest = new Library();
-        assertTrue(classUnderTest.someLibraryMethod(), "isWorkingDependencyProject should return 'true'");
+    	Pet pet = new Pet("Max", "Perro", null);
+    	assertEquals(pet.getAnimalType(), "Perro");
     }
 }
