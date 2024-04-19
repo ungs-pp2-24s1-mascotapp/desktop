@@ -2,8 +2,6 @@ package com.mascotapp.desktop.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.mascotapp.core.MascotApp;
 import com.mascotapp.desktop.view.MascotAppView;

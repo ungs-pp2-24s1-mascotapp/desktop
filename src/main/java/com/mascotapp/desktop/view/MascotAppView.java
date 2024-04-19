@@ -6,7 +6,6 @@ package com.mascotapp.desktop.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
