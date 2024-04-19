@@ -15,8 +15,8 @@ public class Main {
     private final MascotAppView mascotAppView;
     private final MascotAppController mascotAppController;
 
-    public Main() throws FileNotFoundException {
-        this.mascotApp = MascotAppInitializer.initializeWithJarFiles("plugins");
+    public Main(String path) throws FileNotFoundException {
+        this.mascotApp = MascotAppInitializer.initializeWithJarFiles(path);
         this.mascotAppView = new MascotAppView();
         this.mascotAppController = new MascotAppController(mascotAppView, mascotApp);
     }
@@ -26,7 +26,12 @@ public class Main {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        new Main().init();
+    	if(args.length == 0) {
+    		System.out.println("Se necesita especificar la ruta para cargar los plugins");
+    		return;
+    	}
+    		
+        new Main(args[0]).init();
     }
 
 }
