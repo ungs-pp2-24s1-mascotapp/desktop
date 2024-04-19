@@ -25,7 +25,7 @@ public class MascotAppController {
         @Override
         public void actionPerformed(ActionEvent e) {
             String query = mascotAppView.getSearchQuery();
-            mascotAppCore.search(query);
+            mascotAppCore.getMatches();
         }
     }
 }

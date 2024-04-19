@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -21,7 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import com.mascotapp.core.MascotApp;
-import com.mascotapp.core.entities.Pet;
+import com.mascotapp.core.entities.Match;
+import com.mascotapp.core.entities.Post;
 import com.mascotapp.desktop.controller.MascotAppController;
 
 public class MascotAppView extends JFrame implements Observer {
@@ -87,15 +89,23 @@ public class MascotAppView extends JFrame implements Observer {
     
     @Override
     public void update(Observable o, Object arg) {
-        List<Pet> results = (List<Pet>) arg;
+        Set<Match> results = (Set<Match>) arg;
         setResults(results);
     }
     
-    public void setResults(List<Pet> results) {
+    public void setResults(Set<Match> results) {
         listModel.clear();
-        for (Pet result : results) {
-            listModel.addElement(result.getAnimalType() + ", " + result.getName() + ", " + result.getPost().getUrl());
+        for (Match result : results) {
+        	listModel.addElement(getFullText(result));
         }
+    }
+    
+    private String getFullText(Match match) {
+    	return getPostText(match.getLostPet()) + ", " + getPostText(match.getFoundPet());
+    }
+    
+    private String getPostText(Post post) {
+    	return post.getContent() + ":" + post.getUrl();
     }
     
     public String getSearchQuery() {

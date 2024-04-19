@@ -5,13 +5,13 @@ package com.mascotapp.desktop;
 
 import org.junit.jupiter.api.Test;
 
-import com.mascotapp.core.entities.Pet;
+import com.mascotapp.core.entities.Post;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MascotAppViewTest {
     @Test void isWorkingDependencyProjectMethodReturnsTrue() {
-    	Pet pet = new Pet("Max", "Perro", null);
-    	assertEquals(pet.getAnimalType(), "Perro");
+    	Post post = new Post("Max", "www.facebook.com");
+    	assertEquals(post.getContent(), "Max");
     }
 }
