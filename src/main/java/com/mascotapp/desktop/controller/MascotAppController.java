@@ -11,7 +11,8 @@ public class MascotAppController {
 	private MascotAppView mascotAppView;
     private MascotApp mascotAppCore;
 
-    public MascotAppController(MascotAppView mascotAppView, MascotApp mascotAppCore) {
+    @SuppressWarnings("deprecation")
+	public MascotAppController(MascotAppView mascotAppView, MascotApp mascotAppCore) {
         this.mascotAppView = mascotAppView;
         this.mascotAppCore = mascotAppCore;
         
