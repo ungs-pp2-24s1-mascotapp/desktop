@@ -60,13 +60,13 @@ public class MascotAppView extends JFrame implements Observer {
         searchPanel.setLayout(new BorderLayout());
         mainPanel.add(searchPanel, BorderLayout.NORTH);
         
-        JLabel searchLabel = new JLabel("Buscar mascota:");
-        searchPanel.add(searchLabel, BorderLayout.WEST);
+        //JLabel searchLabel = new JLabel("Buscar mascotas:");
+        //searchPanel.add(searchLabel, BorderLayout.WEST);
 
         searchField = new JTextField();
-        searchPanel.add(searchField, BorderLayout.CENTER);
+        //searchPanel.add(searchField, BorderLayout.CENTER);
 
-        searchButton = new JButton("Buscar");
+        searchButton = new JButton("Buscar Mascotas");
         searchPanel.add(searchButton, BorderLayout.EAST);
 
         listModel = new DefaultListModel<>();
@@ -94,7 +94,7 @@ public class MascotAppView extends JFrame implements Observer {
     }
     
     private String getFullText(Match match) {
-    	return getPostText(match.getLostPet()) + ", " + getPostText(match.getFoundPet());
+    	return "Post Mascota Perdida [" + getPostText(match.getLostPet()) + "]" + ", Post Mascota Encontrada [" + getPostText(match.getFoundPet()) + "]";
     }
     
     private String getPostText(Post post) {
