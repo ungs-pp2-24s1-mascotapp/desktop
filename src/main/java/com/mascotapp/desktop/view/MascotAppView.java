@@ -38,11 +38,12 @@ import java.awt.GridBagLayout;
 public class MascotAppView extends JFrame implements Observer {
 	
 	private final String titleApp = "MascotApp";
-	private final int windowSizeWidth = 1024;
-	private final int windowSizeHeight = 700;
+	private final int windowSizeWidth = 1200;
+	private final int windowSizeHeight = 720;
 	
 	JTextField searchField;
-	JButton searchButton;    
+	JButton searchButton;
+    
     JPanel resultados;
     
     public MascotAppView(MascotApp core) {
@@ -98,10 +99,9 @@ public class MascotAppView extends JFrame implements Observer {
     
     public void setResults(Set<Match> results) {
         resultados.removeAll();
-        resultados.setLayout(new GridLayout(results.size(), 2, 40, 10));     
+        resultados.setLayout(new GridLayout(results.size(), 3, 0, 20));     
         
         for (Match result: results) {
-        	System.out.println(result);
         	displayItem(result);
         }
     }
@@ -119,15 +119,19 @@ public class MascotAppView extends JFrame implements Observer {
         lostCard.setLayout(new BorderLayout());
 		
 		JLabel txtLost = new JLabel("PERDIDO");
+		txtLost.setBorder(new EmptyBorder(0, 0, 10, 0));
 		txtLost.setForeground(Color.RED);
 		lostCard.add(txtLost, BorderLayout.NORTH);
 				
 		JLabel lblLost = new JLabel();
+		lblLost.setBorder(new EmptyBorder(0, 0, 20, 0));
+		lostCard.add(lblLost, BorderLayout.WEST);
+		
 		JButton btnLost = new JButton("Ver publicación");
 		btnLost.setBackground(new Color(13, 110, 253));
 	    btnLost.setForeground(Color.WHITE);
-        lostCard.add(lblLost, BorderLayout.WEST);
-        lostCard.add(btnLost, BorderLayout.SOUTH);
+        
+	    lostCard.add(btnLost, BorderLayout.SOUTH);
         lostCard.setBackground(new Color(192,197,193));
         lostCard.setBorder(new EmptyBorder(10, 10, 10, 10));
 
@@ -135,34 +139,37 @@ public class MascotAppView extends JFrame implements Observer {
         foundCard.setLayout(new BorderLayout());
         
         JLabel txtFound = new JLabel("ENCONTRADO");
+        txtFound.setBorder(new EmptyBorder(0, 0, 10, 0));
         txtFound.setForeground(new Color(75, 170, 75));
 		foundCard.add(txtFound, BorderLayout.NORTH);
 		
         JLabel lblFound = new JLabel();
+		lblFound.setBorder(new EmptyBorder(0, 0, 20, 0));
+        foundCard.add(lblFound, BorderLayout.WEST);
+        
         JButton btnFound = new JButton("Ver publicación");
         btnFound.setBackground(new Color(13, 110, 253));
 	    btnFound.setForeground(Color.WHITE);
-		foundCard.add(lblFound, BorderLayout.CENTER);
 		foundCard.add(btnFound, BorderLayout.SOUTH);
 		foundCard.setBackground(new Color(192,197,193));
 		foundCard.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
-		
-		  JPanel match = new JPanel(); match.setLayout(new BorderLayout()); JLabel
-		  lblMatch = new JLabel();
-		  lblMatch.setHorizontalAlignment(SwingConstants.CENTER); 
-		  lblMatch.setFont(new Font("Roboto", Font.BOLD, 36)); 
-		  lblMatch.setForeground(new Color(92, 184, 92));
-		  match.add(lblMatch, BorderLayout.CENTER);
+		JPanel match = new JPanel(); 
+		match.setLayout(new BorderLayout()); 
+		JLabel lblMatch = new JLabel();
+		lblMatch.setHorizontalAlignment(SwingConstants.CENTER); 
+		lblMatch.setFont(new Font("Roboto", Font.BOLD, 36)); 
+		lblMatch.setForeground(Color.WHITE);
+		match.setBackground(new Color(92, 184, 92));
+		match.add(lblMatch, BorderLayout.CENTER);
 		 
-		
 		resultados.add(lostCard);
-        //resultados.add(match);
+        resultados.add(match);
         resultados.add(foundCard);
+        
         lblLost.setText(item.getLostPet().getContent());
         lblFound.setText(item.getFoundPet().getContent());
-        
-        lblMatch.setText("¡MATCH!");
+        lblMatch.setText("← ¡MATCH! →");
         
         btnLost.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
