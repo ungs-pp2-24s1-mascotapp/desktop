@@ -2,10 +2,12 @@ package com.mascotapp.desktop.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
@@ -18,6 +20,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.Border;
@@ -36,13 +39,10 @@ public class MascotAppView extends JFrame implements Observer {
 	
 	private final String titleApp = "MascotApp";
 	private final int windowSizeWidth = 1024;
-	private final int windowSizeHeight = 600;
+	private final int windowSizeHeight = 700;
 	
 	JTextField searchField;
-	JButton searchButton;
-    private DefaultListModel<String> listModel;
-    
-    JLabel lblEncontrado;
+	JButton searchButton;    
     JPanel resultados;
     
     public MascotAppView(MascotApp core) {
@@ -70,20 +70,19 @@ public class MascotAppView extends JFrame implements Observer {
         searchPanel.setLayout(new BorderLayout());
         mainPanel.add(searchPanel, BorderLayout.NORTH);
         
-        //JLabel searchLabel = new JLabel("Buscar mascotas:");
-        //searchPanel.add(searchLabel, BorderLayout.WEST);
-
         searchField = new JTextField();
-        //searchPanel.add(searchField, BorderLayout.CENTER);
-
-        searchButton = new JButton("Buscar Mascotas");
-        searchPanel.add(searchButton, BorderLayout.EAST);
-        	
+        searchButton = new JButton("Buscar mascotas");
+        searchButton.setBackground(new Color(241, 136, 5));
+        searchButton.setForeground(Color.WHITE);
+        searchPanel.add(searchButton, BorderLayout.WEST);
+        searchPanel.setBorder(new EmptyBorder(10, 0, 10, 10));
+        
         resultados = new JPanel();
         mainPanel.add(resultados, BorderLayout.CENTER);
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
       
-        listModel = new DefaultListModel<>();
+        JScrollPane scrollPane = new JScrollPane(resultados, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        mainPanel.add(scrollPane);
     }
     
     private void centerWindow() {
@@ -98,22 +97,13 @@ public class MascotAppView extends JFrame implements Observer {
     }
     
     public void setResults(Set<Match> results) {
-        listModel.clear();
-        resultados.setLayout(new GridLayout(results.size(), 3, 20, 20));
-       
+        resultados.removeAll();
+        resultados.setLayout(new GridLayout(results.size(), 2, 40, 10));     
+        
         for (Match result: results) {
         	System.out.println(result);
         	displayItem(result);
-        	//listModel.addElement(getFullText(result));
         }
-    }
-    
-    private String getFullText(Match match) {
-    	return "Post Mascota Perdida [" + getPostText(match.getLostPet()) + "]" + ", Post Mascota Encontrada [" + getPostText(match.getFoundPet()) + "]";
-    }
-    
-    private String getPostText(Post post) {
-    	return post.getContent() + ":" + post.getUrl();
     }
     
     public String getSearchQuery() {
@@ -127,39 +117,73 @@ public class MascotAppView extends JFrame implements Observer {
 	public void displayItem(Match item) {
         JPanel lostCard = new JPanel();
         lostCard.setLayout(new BorderLayout());
+		
+		JLabel txtLost = new JLabel("PERDIDO");
+		txtLost.setForeground(Color.RED);
+		lostCard.add(txtLost, BorderLayout.NORTH);
+				
 		JLabel lblLost = new JLabel();
 		JButton btnLost = new JButton("Ver publicación");
 		btnLost.setBackground(new Color(13, 110, 253));
 	    btnLost.setForeground(Color.WHITE);
-        lostCard.add(lblLost, BorderLayout.NORTH);
+        lostCard.add(lblLost, BorderLayout.WEST);
         lostCard.add(btnLost, BorderLayout.SOUTH);
         lostCard.setBackground(new Color(192,197,193));
         lostCard.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JPanel foundCard = new JPanel();
         foundCard.setLayout(new BorderLayout());
+        
+        JLabel txtFound = new JLabel("ENCONTRADO");
+        txtFound.setForeground(new Color(75, 170, 75));
+		foundCard.add(txtFound, BorderLayout.NORTH);
+		
         JLabel lblFound = new JLabel();
         JButton btnFound = new JButton("Ver publicación");
         btnFound.setBackground(new Color(13, 110, 253));
 	    btnFound.setForeground(Color.WHITE);
-		foundCard.add(lblFound, BorderLayout.NORTH);
+		foundCard.add(lblFound, BorderLayout.CENTER);
 		foundCard.add(btnFound, BorderLayout.SOUTH);
 		foundCard.setBackground(new Color(192,197,193));
 		foundCard.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
-		JPanel match = new JPanel();
-		match.setLayout(new BorderLayout());
-		JLabel lblMatch = new JLabel();
-		lblMatch.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMatch.setFont(new Font("Roboto", Font.BOLD, 36));
-		lblMatch.setForeground(Color.GREEN);
-		match.add(lblMatch, BorderLayout.CENTER);
-
+		
+		  JPanel match = new JPanel(); match.setLayout(new BorderLayout()); JLabel
+		  lblMatch = new JLabel();
+		  lblMatch.setHorizontalAlignment(SwingConstants.CENTER); 
+		  lblMatch.setFont(new Font("Roboto", Font.BOLD, 36)); 
+		  lblMatch.setForeground(new Color(92, 184, 92));
+		  match.add(lblMatch, BorderLayout.CENTER);
+		 
+		
 		resultados.add(lostCard);
-        resultados.add(match);
+        //resultados.add(match);
         resultados.add(foundCard);
         lblLost.setText(item.getLostPet().getContent());
         lblFound.setText(item.getFoundPet().getContent());
-        lblMatch.setText("MATCH");
+        
+        lblMatch.setText("¡MATCH!");
+        
+        btnLost.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	try {
+                	java.awt.Desktop.getDesktop().browse(java.net.URI.create(item.getLostPet().getUrl()));
+            	}
+            	catch(Exception ex){
+            		ex.printStackTrace();
+            	}
+            }
+        });
+        
+        btnFound.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	try {
+                	java.awt.Desktop.getDesktop().browse(java.net.URI.create(item.getFoundPet().getUrl()));
+            	}
+            	catch(Exception ex){
+            		ex.printStackTrace();
+            	}
+            }
+        });
 	}
 }
