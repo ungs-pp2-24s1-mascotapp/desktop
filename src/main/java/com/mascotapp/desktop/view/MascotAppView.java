@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -47,6 +48,7 @@ public class MascotAppView extends JFrame implements Observer {
     JPanel resultados;
     
     public MascotAppView(MascotApp core) {
+    	this.setCrossPlatformJavaLookAndFeelMetal();
         this.initializeWindow();
         new MascotAppController(this, core);
     }
@@ -54,6 +56,14 @@ public class MascotAppView extends JFrame implements Observer {
 
     public void init() {
         this.setVisible(true);
+    }
+    
+    private void setCrossPlatformJavaLookAndFeelMetal() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     private void initializeWindow() {
@@ -73,6 +83,7 @@ public class MascotAppView extends JFrame implements Observer {
         
         searchField = new JTextField();
         searchButton = new JButton("Buscar mascotas");
+        //Color Naranja
         searchButton.setBackground(new Color(241, 136, 5));
         searchButton.setForeground(Color.WHITE);
         searchPanel.add(searchButton, BorderLayout.WEST);
@@ -128,6 +139,7 @@ public class MascotAppView extends JFrame implements Observer {
 		lostCard.add(lblLost, BorderLayout.WEST);
 		
 		JButton btnLost = new JButton("Ver publicación");
+		//Color Azul
 		btnLost.setBackground(new Color(13, 110, 253));
 	    btnLost.setForeground(Color.WHITE);
         
