@@ -42,6 +42,7 @@ public class MascotAppView extends JFrame implements Observer {
 	private final String buttonPostText = "Ver publicación";
 	private final String menuText = "Redes sociales";
 	private final String buttonSearchText = "Buscar mascotas";
+	private final String stopSearchText = "Pausar busqueda";
 	private final String lostText = "PERDIDO";
 	private final String foundText = "ENCONTRADO";
 	
@@ -147,6 +148,15 @@ public class MascotAppView extends JFrame implements Observer {
 
 	public void setSearchListener(ActionListener searchListener) {
 		searchButton.addActionListener(searchListener);
+		
+	}
+	
+	public void changeButtonText(boolean isSearching) {
+		if (isSearching) {
+			searchButton.setText(stopSearchText);
+		} else {
+			searchButton.setText(buttonSearchText);
+		}
 	}
 	
 	public void displayItem(Match item) {

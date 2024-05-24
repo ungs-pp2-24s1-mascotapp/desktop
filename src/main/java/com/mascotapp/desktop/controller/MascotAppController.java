@@ -3,6 +3,7 @@ package com.mascotapp.desktop.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JCheckBoxMenuItem;
 
@@ -14,6 +15,7 @@ public class MascotAppController {
 	
 	private MascotAppView mascotAppView;
     private MascotApp mascotAppCore;
+    private boolean isSearching;
 
     @SuppressWarnings("deprecation")
 	public MascotAppController(MascotAppView mascotAppView, MascotApp mascotAppCore) {
@@ -30,7 +32,13 @@ public class MascotAppController {
     private class SearchListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            mascotAppCore.getMatches();
+        	if (!isSearching) {
+        		mascotAppCore.startService(0, 5, TimeUnit.SECONDS);
+        	} else {
+        		mascotAppCore.stopService();
+        	}
+        	isSearching = !isSearching;
+        	mascotAppView.changeButtonText(isSearching);
         }
     }
     
