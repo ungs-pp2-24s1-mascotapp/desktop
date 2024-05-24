@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
@@ -26,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.mascotapp.core.MascotApp;
 import com.mascotapp.core.entities.Match;
+import com.mascotapp.core.entities.Post;
 import com.mascotapp.core.service.socialNetwork.SocialNetworkInfo;
 import com.mascotapp.desktop.controller.MascotAppController;
 import java.awt.GridLayout;
@@ -34,6 +37,14 @@ import java.awt.GridLayout;
 public class MascotAppView extends JFrame implements Observer {
 	
 	private final String titleApp = "MascotApp";
+	private final String matchText = "← ¡MATCH! →";
+	private final String fontNameMatch = "Roboto";
+	private final String buttonPostText = "Ver publicación";
+	private final String menuText = "Redes sociales";
+	private final String buttonSearchText = "Buscar mascotas";
+	private final String lostText = "PERDIDO";
+	private final String foundText = "ENCONTRADO";
+	
 	private final int windowSizeWidth = 1200;
 	private final int windowSizeHeight = 720;
 	
@@ -75,7 +86,7 @@ public class MascotAppView extends JFrame implements Observer {
         searchPanel.setLayout(new BorderLayout());
         mainPanel.add(searchPanel, BorderLayout.NORTH);
         
-        searchButton = new JButton("Buscar mascotas");
+        searchButton = new JButton(buttonSearchText);
         //Color Naranja
         searchButton.setBackground(new Color(241, 136, 5));
         searchButton.setForeground(Color.WHITE);
@@ -95,7 +106,7 @@ public class MascotAppView extends JFrame implements Observer {
         JMenuBar menuBar = new JMenuBar();
 
         // Crear el menú "Social Network"
-        JMenu socialNetWorkMenu = new JMenu("Redes sociales");
+        JMenu socialNetWorkMenu = new JMenu(menuText);
         menuBar.add(socialNetWorkMenu);
         
         //Crear opciones con check de forma genérica
@@ -142,7 +153,7 @@ public class MascotAppView extends JFrame implements Observer {
         JPanel lostCard = new JPanel();
         lostCard.setLayout(new BorderLayout());
 		
-		JLabel txtLost = new JLabel("PERDIDO");
+		JLabel txtLost = new JLabel(lostText);
 		txtLost.setBorder(new EmptyBorder(0, 0, 10, 0));
 		txtLost.setForeground(Color.RED);
 		lostCard.add(txtLost, BorderLayout.NORTH);
@@ -151,7 +162,7 @@ public class MascotAppView extends JFrame implements Observer {
 		lblLost.setBorder(new EmptyBorder(0, 0, 20, 0));
 		lostCard.add(lblLost, BorderLayout.WEST);
 		
-		JButton btnLost = new JButton("Ver publicación");
+		JButton btnLost = new JButton(getSeePostButtonText(item.getLostPet()));
 		//Color Azul
 		btnLost.setBackground(new Color(13, 110, 253));
 	    btnLost.setForeground(Color.WHITE);
@@ -163,7 +174,7 @@ public class MascotAppView extends JFrame implements Observer {
         JPanel foundCard = new JPanel();
         foundCard.setLayout(new BorderLayout());
         
-        JLabel txtFound = new JLabel("ENCONTRADO");
+        JLabel txtFound = new JLabel(foundText);
         txtFound.setBorder(new EmptyBorder(0, 0, 10, 0));
         txtFound.setForeground(new Color(75, 170, 75));
 		foundCard.add(txtFound, BorderLayout.NORTH);
@@ -172,7 +183,7 @@ public class MascotAppView extends JFrame implements Observer {
 		lblFound.setBorder(new EmptyBorder(0, 0, 20, 0));
         foundCard.add(lblFound, BorderLayout.WEST);
         
-        JButton btnFound = new JButton("Ver publicación");
+        JButton btnFound = new JButton(getSeePostButtonText(item.getFoundPet()));
         btnFound.setBackground(new Color(13, 110, 253));
 	    btnFound.setForeground(Color.WHITE);
 		foundCard.add(btnFound, BorderLayout.SOUTH);
@@ -183,7 +194,7 @@ public class MascotAppView extends JFrame implements Observer {
 		match.setLayout(new BorderLayout()); 
 		JLabel lblMatch = new JLabel();
 		lblMatch.setHorizontalAlignment(SwingConstants.CENTER); 
-		lblMatch.setFont(new Font("Roboto", Font.BOLD, 36)); 
+		lblMatch.setFont(new Font(fontNameMatch, Font.BOLD, 36)); 
 		lblMatch.setForeground(Color.WHITE);
 		match.setBackground(new Color(92, 184, 92));
 		match.add(lblMatch, BorderLayout.CENTER);
@@ -194,7 +205,7 @@ public class MascotAppView extends JFrame implements Observer {
         
         lblLost.setText(item.getLostPet().getContent());
         lblFound.setText(item.getFoundPet().getContent());
-        lblMatch.setText("← ¡MATCH! →");
+        lblMatch.setText(matchText);
         
         btnLost.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -217,5 +228,24 @@ public class MascotAppView extends JFrame implements Observer {
             	}
             }
         });
+	}
+	
+	private String getDomain(Post post) {
+		String domain = "";
+		String url = post.getUrl();
+        try {
+            URI uri = new URI(url);
+            domain = uri.getHost();
+            if (domain != null && domain.startsWith("www.")) {
+                domain = domain.substring(4);
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return domain;
+	}
+	
+	private String getSeePostButtonText(Post post) {
+		return buttonPostText + " en " + getDomain(post);
 	}
 }
