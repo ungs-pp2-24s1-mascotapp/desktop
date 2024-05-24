@@ -2,8 +2,12 @@ package com.mascotapp.desktop.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
+
+import javax.swing.JCheckBoxMenuItem;
 
 import com.mascotapp.core.MascotApp;
+import com.mascotapp.core.service.socialNetwork.SocialNetworkInfo;
 import com.mascotapp.desktop.view.MascotAppView;
 
 public class MascotAppController {
@@ -18,13 +22,26 @@ public class MascotAppController {
         
         mascotAppView.setSearchListener(new SearchListener());
         mascotAppCore.addObserver(mascotAppView);
+        
+        Set<SocialNetworkInfo> socialNetworks = mascotAppCore.getSocialNetworks();
+        mascotAppView.addMenu(socialNetworks, new MenuActionListener());
     }
 	
     private class SearchListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String query = mascotAppView.getSearchQuery();
             mascotAppCore.getMatches();
+        }
+    }
+    
+    private class MenuActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JCheckBoxMenuItem source = (JCheckBoxMenuItem) e.getSource();
+            String option = source.getText();
+            boolean isSelected = source.isSelected();
+            if(isSelected) mascotAppCore.activateSocialNetwork(option);
+            else mascotAppCore.deactivateSocialNetwork(option);
         }
     }
 }

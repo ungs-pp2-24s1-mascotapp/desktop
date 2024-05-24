@@ -2,47 +2,41 @@ package com.mascotapp.desktop.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import com.mascotapp.core.MascotApp;
 import com.mascotapp.core.entities.Match;
-import com.mascotapp.core.entities.Post;
+import com.mascotapp.core.service.socialNetwork.SocialNetworkInfo;
 import com.mascotapp.desktop.controller.MascotAppController;
 import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.GridBagLayout;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({ "serial", "deprecation" })
 public class MascotAppView extends JFrame implements Observer {
 	
 	private final String titleApp = "MascotApp";
 	private final int windowSizeWidth = 1200;
 	private final int windowSizeHeight = 720;
 	
-	JTextField searchField;
 	JButton searchButton;
     
     JPanel resultados;
@@ -81,7 +75,6 @@ public class MascotAppView extends JFrame implements Observer {
         searchPanel.setLayout(new BorderLayout());
         mainPanel.add(searchPanel, BorderLayout.NORTH);
         
-        searchField = new JTextField();
         searchButton = new JButton("Buscar mascotas");
         //Color Naranja
         searchButton.setBackground(new Color(241, 136, 5));
@@ -97,14 +90,35 @@ public class MascotAppView extends JFrame implements Observer {
         mainPanel.add(scrollPane);
     }
     
+    public void addMenu(Set<SocialNetworkInfo> socialNetworks, ActionListener actionListener) {
+    	// Crear la barra de menú
+        JMenuBar menuBar = new JMenuBar();
+
+        // Crear el menú "Social Network"
+        JMenu socialNetWorkMenu = new JMenu("Redes sociales");
+        menuBar.add(socialNetWorkMenu);
+        
+        //Crear opciones con check de forma genérica
+
+        for (SocialNetworkInfo socialNetwork : socialNetworks) {
+            JCheckBoxMenuItem menuItem = new JCheckBoxMenuItem(socialNetwork.getName());
+            menuItem.addActionListener(actionListener);
+            menuItem.setSelected(socialNetwork.isActive());
+            socialNetWorkMenu.add(menuItem);
+        }
+
+        // Configurar la barra de menú en la ventana
+        setJMenuBar(menuBar);
+    }
+    
     private void centerWindow() {
     	setLocationRelativeTo(null);
     }
     
-    @SuppressWarnings("deprecation")
-	@Override
+    @Override
     public void update(Observable o, Object arg) {
-        Set<Match> results = (Set<Match>) arg;
+        @SuppressWarnings("unchecked")
+		Set<Match> results = (Set<Match>) arg;
         setResults(results);
     }
     
@@ -115,10 +129,9 @@ public class MascotAppView extends JFrame implements Observer {
         for (Match result: results) {
         	displayItem(result);
         }
-    }
-    
-    public String getSearchQuery() {
-        return searchField.getText();
+        
+        resultados.revalidate();
+        resultados.repaint();
     }
 
 	public void setSearchListener(ActionListener searchListener) {
