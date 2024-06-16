@@ -172,7 +172,7 @@ public class MascotAppView extends JFrame implements Observer {
 		lblLost.setBorder(new EmptyBorder(0, 0, 20, 0));
 		lostCard.add(lblLost, BorderLayout.WEST);
 		
-		JButton btnLost = new JButton(getSeePostButtonText(item.getLostPet()));
+		JButton btnLost = new JButton(getSeePostButtonText(item.getLostPost()));
 		//Color Azul
 		btnLost.setBackground(new Color(13, 110, 253));
 	    btnLost.setForeground(Color.WHITE);
@@ -193,7 +193,7 @@ public class MascotAppView extends JFrame implements Observer {
 		lblFound.setBorder(new EmptyBorder(0, 0, 20, 0));
         foundCard.add(lblFound, BorderLayout.WEST);
         
-        JButton btnFound = new JButton(getSeePostButtonText(item.getFoundPet()));
+        JButton btnFound = new JButton(getSeePostButtonText(item.getFoundPost()));
         btnFound.setBackground(new Color(13, 110, 253));
 	    btnFound.setForeground(Color.WHITE);
 		foundCard.add(btnFound, BorderLayout.SOUTH);
@@ -213,14 +213,14 @@ public class MascotAppView extends JFrame implements Observer {
         resultados.add(match);
         resultados.add(foundCard);
         
-        lblLost.setText(item.getLostPet().getContent());
-        lblFound.setText(item.getFoundPet().getContent());
+        lblLost.setText(item.getLostPost().getContent());
+        lblFound.setText(item.getFoundPost().getContent());
         lblMatch.setText(matchText);
         
         btnLost.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	try {
-                	java.awt.Desktop.getDesktop().browse(java.net.URI.create(item.getLostPet().getUrl()));
+                	java.awt.Desktop.getDesktop().browse(java.net.URI.create(item.getLostPost().getUrl()));
             	}
             	catch(Exception ex){
             		ex.printStackTrace();
@@ -231,7 +231,7 @@ public class MascotAppView extends JFrame implements Observer {
         btnFound.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	try {
-                	java.awt.Desktop.getDesktop().browse(java.net.URI.create(item.getFoundPet().getUrl()));
+                	java.awt.Desktop.getDesktop().browse(java.net.URI.create(item.getFoundPost().getUrl()));
             	}
             	catch(Exception ex){
             		ex.printStackTrace();
@@ -240,22 +240,7 @@ public class MascotAppView extends JFrame implements Observer {
         });
 	}
 	
-	private String getDomain(Post post) {
-		String domain = "";
-		String url = post.getUrl();
-        try {
-            URI uri = new URI(url);
-            domain = uri.getHost();
-            if (domain != null && domain.startsWith("www.")) {
-                domain = domain.substring(4);
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return domain;
-	}
-	
 	private String getSeePostButtonText(Post post) {
-		return buttonPostText + " en " + getDomain(post);
+		return buttonPostText + " en " + post.getDomain();
 	}
 }

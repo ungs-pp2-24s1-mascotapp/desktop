@@ -23,7 +23,7 @@ dependencies {
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    implementation 'com.github.ungs-pp2-24s1-mascotapp:core:main-SNAPSHOT'
+    implementation 'com.github.ungs-pp2-24s1-mascotapp:core:v1.3.0'
 }
 
 tasks.named('test') {
